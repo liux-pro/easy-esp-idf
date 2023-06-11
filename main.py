@@ -36,6 +36,8 @@ def download_and_extract_zip(url, extract_path):
     os.remove(file_name)
 
 
+os.mkdir(f"IDF{IdfVersion}")
+
 idf_env_bat = fr"""
 @echo off
 set IDF_PATH=%~dp0\idf\esp-idf-{IdfVersion}
