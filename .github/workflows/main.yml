@@ -1,0 +1,16 @@
+# 检测代码能否正常编译
+
+name: Build
+
+on:
+  push:
+    branches: [ "master" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: build artifact
+        run: python main.py
