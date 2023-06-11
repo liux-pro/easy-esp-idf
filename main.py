@@ -60,7 +60,7 @@ set PYTHONNOUSERSITE=True
 set "PATH=%IDF_PYTHON_DIR%;%IDF_GIT_DIR%;%PATH%"
 if exist "%IDF_PATH%\export.bat" %IDF_PATH%\export.bat
 """
-f = open(f"IDF{IdfVersion}/idf.bat", "w")
+f = open(fr"IDF{IdfVersion}\idf.bat", "w")
 f.write(idf_env_bat)
 f.close()
 
