@@ -107,4 +107,4 @@ subprocess.call(rf'IDF{IdfVersion}\idf_install.bat')
 os.remove(rf'IDF{IdfVersion}\idf_install.bat')
 
 # # 创建压缩文件
-# shutil.make_archive(f"IDF{IdfVersion}.zip", 'zip', f"IDF{IdfVersion}")
+shutil.make_archive(f"IDF{IdfVersion}.zip", 'zip', f"IDF{IdfVersion}")
