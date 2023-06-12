@@ -106,5 +106,9 @@ download_and_extract_zip(idf_url, idf_dir)
 subprocess.call(rf'IDF{IdfVersion}\idf_install.bat')
 os.remove(rf'IDF{IdfVersion}\idf_install.bat')
 
+
+shutil.rmtree(rf"IDF{IdfVersion}\idf\esp-idf-{IdfVersion}\.git")
+shutil.rmtree(rf"IDF{IdfVersion}\dist")
+
 # # 创建压缩文件
 shutil.make_archive(f"IDF{IdfVersion}", 'zip', f"IDF{IdfVersion}")
