@@ -44,10 +44,13 @@ idf_env_bat = fr"""
 @echo off
 set IDF_PATH=%~dp0\idf\esp-idf-{IdfVersion}
 set IDF_PYTHON=%~dp0\tools\python\python.exe
-set IDF_PYTHON_DIR=%~dp0\tools\python
+set IDF_PYTHON_DIR=%~dp0tools\python
 set IDF_GIT_DIR=%~dp0\tools\git\cmd
 set IDF_TOOLS_PATH=%~dp0
 
+for /D %%G in ("%~dp0\python_env\*") do (
+    echo home=%IDF_PYTHON_DIR%>%%G\pyvenv.cfg
+)
 
 set PREFIX=%IDF_PYTHON% %IDF_PATH%
 DOSKEY idf.py=%PREFIX%\tools\idf.py $*
