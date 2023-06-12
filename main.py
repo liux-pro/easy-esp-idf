@@ -39,6 +39,7 @@ def download_and_extract_zip(url, extract_path):
 
 os.mkdir(f"IDF{IdfVersion}")
 
+# 未来用这个文件进入idf环境
 idf_env_bat = fr"""
 @echo off
 set IDF_PATH=%~dp0\idf\esp-idf-{IdfVersion}
@@ -63,16 +64,37 @@ set PYTHONNOUSERSITE=True
 set "PATH=%IDF_PYTHON_DIR%;%IDF_GIT_DIR%;%PATH%"
 if exist "%IDF_PATH%\export.bat" %IDF_PATH%\export.bat
 """
-
-# 未来用这个文件进入idf环境
 f = open(fr"IDF{IdfVersion}\idf.bat", "w")
 f.write(idf_env_bat)
 f.close()
 
 # 这个脚本让idf自动下载编译器和普通包
-idf_env_bat = idf_env_bat + "\r\n" + f"IDF{IdfVersion}\\idf\\esp-idf-{IdfVersion}\\install.bat"
+idf_env_install_bat = fr"""
+@echo off
+set IDF_PATH=%~dp0\idf\esp-idf-{IdfVersion}
+set IDF_PYTHON=%~dp0\tools\python\python.exe
+set IDF_PYTHON_DIR=%~dp0\tools\python
+set IDF_GIT_DIR=%~dp0\tools\git\cmd
+set IDF_TOOLS_PATH=%~dp0
+
+
+set PREFIX=%IDF_PYTHON% %IDF_PATH%
+DOSKEY idf.py=%PREFIX%\tools\idf.py $*
+DOSKEY esptool.py=%PREFIX%\components\esptool_py\esptool\esptool.py $*
+DOSKEY espefuse.py=%PREFIX%\components\esptool_py\esptool\espefuse.py $*
+DOSKEY espsecure.py=%PREFIX%\components\esptool_py\esptool\espsecure.py $*
+DOSKEY otatool.py=%PREFIX%\components\app_update\otatool.py $*
+DOSKEY parttool.py=%PREFIX%\components\partition_table\parttool.py $*
+
+set PYTHONPATH=
+set PYTHONHOME=
+set PYTHONNOUSERSITE=True
+
+set "PATH=%IDF_PYTHON_DIR%;%IDF_GIT_DIR%;%PATH%"
+IDF{IdfVersion}\idf\esp-idf-{IdfVersion}\install.bat"
+"""
 f = open(fr"IDF{IdfVersion}\idf_install.bat", "w")
-f.write(idf_env_bat)
+f.write(idf_env_install_bat)
 f.close()
 
 # idf只需要python，git，和idf这三个东西，之后能自动下载python依赖包和gcc等工具。
