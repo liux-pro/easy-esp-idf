@@ -2,6 +2,7 @@ import urllib.request
 import os
 import zipfile
 import subprocess
+import shutil
 
 # 这些文件来自于乐鑫  https://github.com/espressif/idf-installer/blob/main/Build-Installer.ps1
 IdfPythonVersion = "3.11.2"
@@ -62,13 +63,27 @@ set PYTHONNOUSERSITE=True
 set "PATH=%IDF_PYTHON_DIR%;%IDF_GIT_DIR%;%PATH%"
 if exist "%IDF_PATH%\export.bat" %IDF_PATH%\export.bat
 """
+
+# 未来用这个文件进入idf环境
 f = open(fr"IDF{IdfVersion}\idf.bat", "w")
 f.write(idf_env_bat)
 f.close()
 
+# 这个脚本让idf自动下载编译器和普通包
+idf_env_bat = idf_env_bat + "\r\n" + f"IDF{IdfVersion}\\idf\\esp-idf-{IdfVersion}\\install.bat"
+f = open(fr"IDF{IdfVersion}\idf_install.bat", "w")
+f.write(idf_env_bat)
+f.close()
+
+# idf只需要python，git，和idf这三个东西，之后能自动下载python依赖包和gcc等工具。
 download_and_extract_zip(python_url, python_dir)
 download_and_extract_zip(git_url, git_dir)
 download_and_extract_zip(idf_url, idf_dir)
 
-bat_path = r'IDFv5.0.2\idf.bat'
-subprocess.call(bat_path)
+# 执行idf安装
+subprocess.call(rf'IDF{IdfVersion}\idf_install.bat')
+os.remove(rf'IDF{IdfVersion}\idf_install.bat')
+
+
+# 创建压缩文件
+shutil.make_archive(".", 'zip', f"IDF{IdfVersion}")
