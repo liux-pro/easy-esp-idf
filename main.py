@@ -10,11 +10,11 @@ GitVersion = "2.39.2"
 IdfVersion = "v5.0.2"
 
 python_url = f"https://dl.espressif.com/dl/idf-python/idf-python-{IdfPythonVersion}-embed-win64.zip"
-python_dir = f"tool/python"
-python_path = "tool/python/python.exe"
+python_dir = f"tools/python"
+python_path = "tools/python/python.exe"
 
 git_url = f"https://dl.espressif.com/dl/idf-git/idf-git-{GitVersion}-win64.zip"
-git_dir = "tool/git"
+git_dir = "tools/git"
 
 idf_url = f"https://github.com/espressif/esp-idf/releases/download/{IdfVersion}/esp-idf-{IdfVersion}.zip"
 idf_dir = "idf"
@@ -108,4 +108,4 @@ os.remove(rf'IDF{IdfVersion}\idf_install.bat')
 
 
 # 创建压缩文件
-shutil.make_archive(".", 'zip', f"IDF{IdfVersion}")
+shutil.make_archive(f"IDF{IdfVersion}.zip", 'zip', f"IDF{IdfVersion}")
