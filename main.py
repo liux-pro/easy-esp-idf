@@ -133,6 +133,12 @@ f = open(fr"IDF{IdfVersion}\idf_install.bat", "w", encoding="utf8")
 f.write(idf_env_install_bat)
 f.close()
 
+# 不知道为什么上面的脚本没有正常写入这个文件，直接用python写入吧
+f = open(fr"IDF{IdfVersion}\path-fix.txt", "w", encoding="utf8")
+f.write("new")
+f.close()
+
+
 # idf只需要python，git，和idf这三个东西，之后能自动下载python依赖包和gcc等工具。
 download_and_extract_zip(python_url, python_dir)
 download_and_extract_zip(git_url, git_dir)
