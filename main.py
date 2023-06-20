@@ -25,7 +25,7 @@ def git_clone(url, extract_path):
     extract_path = f"IDF{IdfVersion}/{extract_path}/{IdfVersion}"
     #                                      克隆子模块                 子模块只克隆表层     仓库只克隆表层
     extra_args = ['--recurse-submodules', '--shallow-submodules', '--depth=1']
-    Repo.clone_from(url, extract_path, branch=IdfVersion, git_args=extra_args)
+    Repo.clone_from(url, extract_path, branch=IdfVersion, multi_options=extra_args)
 
 
 def download_and_extract_zip(url, extract_path):
