@@ -47,3 +47,4 @@ jobs:
           # commit指向一个分支或者commit id
           commit: master
           artifacts: IDF${{ matrix.IDF_VERSION }}.7z
+          body: IDF ${{ matrix.IDF_VERSION }}

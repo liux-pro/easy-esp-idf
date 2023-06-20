@@ -6,7 +6,6 @@ import shutil
 from git import Repo
 import sys
 
-
 # 这些文件来自于乐鑫  https://github.com/espressif/idf-installer/blob/main/Build-Installer.ps1
 IdfPythonVersion = "3.11.2"
 GitVersion = "2.39.2"
@@ -133,11 +132,10 @@ f = open(fr"IDF{IdfVersion}\idf_install.bat", "w", encoding="utf8")
 f.write(idf_env_install_bat)
 f.close()
 
-# 不知道为什么上面的脚本没有正常写入这个文件，直接用python写入吧
+# 随便写入这个路径，让脚本自己去适配pip
 f = open(fr"IDF{IdfVersion}\path-fix.txt", "w", encoding="utf8")
 f.write("new")
 f.close()
-
 
 # idf只需要python，git，和idf这三个东西，之后能自动下载python依赖包和gcc等工具。
 download_and_extract_zip(python_url, python_dir)
@@ -147,6 +145,27 @@ git_clone(idf_url, idf_dir)
 # 执行idf安装
 subprocess.call(rf'IDF{IdfVersion}\idf_install.bat')
 os.remove(rf'IDF{IdfVersion}\idf_install.bat')
+
+# 执行一个编译测试
+build_test_bat = """
+call idf.bat
+idf.py create-project test
+cd test
+idf.py build
+"""
+f = open(fr"IDF{IdfVersion}\build_test.bat", "w", encoding="utf8")
+f.write(build_test_bat)
+f.close()
+subprocess.call(rf'IDF{IdfVersion}\idf_install.bat')
+exists = os.path.exists(rf"IDF{IdfVersion}\test\build\test.bin")
+if exists:
+    print("build test pass!")
+else:
+    print("build test fail!")
+    exit(-1)
+shutil.rmtree(rf"IDF{IdfVersion}\test")
+
+
 
 # 删除下载缓存
 shutil.rmtree(rf"IDF{IdfVersion}\dist")
