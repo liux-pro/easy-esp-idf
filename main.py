@@ -159,7 +159,7 @@ idf.py build
 f = open(fr"IDF{IdfVersion}\build_test.bat", "w", encoding="utf8")
 f.write(build_test_bat)
 f.close()
-subprocess.call(rf'IDF{IdfVersion}\idf_install.bat')
+subprocess.call(rf'IDF{IdfVersion}\build_test.bat')
 exists = os.path.exists(rf"IDF{IdfVersion}\test\build\test.bin")
 if exists:
     print("build test pass!")
@@ -168,8 +168,6 @@ else:
     exit(-1)
 shutil.rmtree(rf"IDF{IdfVersion}\test")
 print("tested idf")
-
-
 
 # 删除下载缓存
 shutil.rmtree(rf"IDF{IdfVersion}\dist")
