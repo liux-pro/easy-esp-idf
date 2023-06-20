@@ -15,13 +15,21 @@ jobs:
         IDF_VERSION: [ v5.1-rc1, v5.0.2 ]
     steps:
       - uses: actions/checkout@v3
-      - name: download runtime dependency
+      - name: Download Build Dependency
         run: pip install gitpython
-      - name: build artifact
+
+      - name: Build
         run: python main.py ${{ matrix.IDF_VERSION }}
-      - name: build archive
+
+      - name: Build archive
         run: 7z a -t7z -mx=9 IDF${{ matrix.IDF_VERSION }}.7z IDF${{ matrix.IDF_VERSION }}
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v3
+
+      - name: Upload Release
+        uses: ncipollo/release-action@v1
         with:
-          path: "IDFv*.7z"
+          allowUpdates: true
+          # github的release必须和一个tag关联，同时设置tag和commit后，这个release-action可以自动创建一个tag来包含release
+          tag: ${{ matrix.IDF_VERSION }}
+          # commit指向一个分支或者commit id
+          commit: master
+          artifacts: IDF${{ matrix.IDF_VERSION }}.7z
