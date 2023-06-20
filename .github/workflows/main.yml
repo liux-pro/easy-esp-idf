@@ -10,12 +10,17 @@ on:
 jobs:
   build:
     runs-on: windows-latest
+    strategy:
+      matrix:
+        IDF_VERSION: [ v5.1-rc1, v5.0.2 ]
     steps:
       - uses: actions/checkout@v3
       - name: download runtime dependency
-        run: pip install gitpython py7zr
+        run: pip install gitpython
       - name: build artifact
-        run: python main.py
+        run: python main.py ${{ matrix.IDF_VERSION }}
+      - name: build archive
+        run: 7z a -t7z -mx=9 IDF${{ matrix.IDF_VERSION }}.7z IDF${{ matrix.IDF_VERSION }}
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:
