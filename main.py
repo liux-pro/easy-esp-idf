@@ -162,7 +162,7 @@ idf.py build
 f = open(fr"IDF{IdfVersion}\build_test.bat", "w", encoding="utf8")
 f.write(build_test_bat)
 f.close()
-subprocess.run(rf'build_test.bat', cwd=rf"IDF{IdfVersion}", shell=True, check=True)
+subprocess.run(rf'build_test.bat', cwd=rf"IDF{IdfVersion}", check=True)
 exists = os.path.exists(rf"IDF{IdfVersion}\test\build\test.bin")
 if exists:
     logging.info("build test pass!")
