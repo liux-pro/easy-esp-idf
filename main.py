@@ -147,7 +147,7 @@ git_clone(idf_url, idf_dir)
 
 # 执行idf安装
 logging.info("installing idf")
-subprocess.run(rf'IDF{IdfVersion}\idf_install.bat', cwd=rf"IDF{IdfVersion}", check=True)
+subprocess.run(rf'IDF{IdfVersion}\idf_install.bat', check=True)
 os.remove(rf'IDF{IdfVersion}\idf_install.bat')
 logging.info("installed idf")
 
