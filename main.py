@@ -4,6 +4,7 @@ import zipfile
 import subprocess
 import shutil
 from git import Repo
+import py7zr
 
 # 这些文件来自于乐鑫  https://github.com/espressif/idf-installer/blob/main/Build-Installer.ps1
 IdfPythonVersion = "3.11.2"
@@ -121,4 +122,6 @@ os.remove(rf'IDF{IdfVersion}\idf_install.bat')
 shutil.rmtree(rf"IDF{IdfVersion}\dist")
 
 # # 创建压缩文件
-shutil.make_archive(f"IDF{IdfVersion}", 'zip', f"IDF{IdfVersion}")
+# shutil.make_archive(f"IDF{IdfVersion}", 'zip', f"IDF{IdfVersion}")
+with py7zr.SevenZipFile(f"IDF{IdfVersion}.7z", mode='w') as archive:
+    archive.writeall(f"IDF{IdfVersion}")
