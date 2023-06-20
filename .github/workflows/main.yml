@@ -8,11 +8,21 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  job_check_new_release:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v3
+      - id: set-matrix
+        run: python get_IDF_version.py >> $GITHUB_OUTPUT
+
+  job_build:
+    needs: job_check_new_release
     runs-on: windows-latest
     strategy:
       matrix:
-        IDF_VERSION: [ v5.1-rc1, v5.0.2 ]
+        IDF_VERSION: ${{ fromJSON(needs.job1.outputs.matrix) }}
     steps:
       - uses: actions/checkout@v3
       - name: Download Build Dependency
