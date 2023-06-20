@@ -58,8 +58,30 @@ set IDF_GIT_DIR=%~dp0\tools\git\cmd
 set IDF_TOOLS_PATH=%~dp0
 
 for /D %%G in ("%~dp0\python_env\*") do (
+rem     这是python虚拟环境的配置文件，里面保存python本体的路径，为防止移动文件夹后不能用，每次都重新生成
     echo home=%IDF_PYTHON_DIR%>%%G\pyvenv.cfg
 )
+
+rem 还是上边的问题，虚拟环境虽然改了配置文件就能用，但是pip不认，这里pip删了重装
+rem path-fix.txt保存了idf安装目录，如果这个目录和当前目录不一样，证明python被移动了，需要重装pip
+set /P pathFix=<path-fix.txt
+
+if "%pathFix%" neq "%~dp0" (
+    echo New install detected! Reinstalling pip!
+
+    for /D %%G in ("%~dp0\python_env\*") do (
+
+        for /D %%F in ("%%G\Lib\site-packages\pip*") do (
+            echo deleting %%F 
+            rmdir /s /q "%%F"
+        )
+        echo Reinstalling!
+        %IDF_PYTHON% -m venv --upgrade-dep "%%G"
+        echo back to IDF!
+    )
+)
+
+echo %~dp0>path-fix.txt
 
 set PREFIX=%IDF_PYTHON% %IDF_PATH%
 DOSKEY idf.py=%PREFIX%\tools\idf.py $*
@@ -89,6 +111,7 @@ set IDF_PYTHON_DIR=%~dp0\tools\python
 set IDF_GIT_DIR=%~dp0\tools\git\cmd
 set IDF_TOOLS_PATH=%~dp0
 
+echo %~dp0>path-fix.txt
 
 set PREFIX=%IDF_PYTHON% %IDF_PATH%
 DOSKEY idf.py=%PREFIX%\tools\idf.py $*
@@ -121,7 +144,6 @@ os.remove(rf'IDF{IdfVersion}\idf_install.bat')
 # 删除下载缓存
 shutil.rmtree(rf"IDF{IdfVersion}\dist")
 
-# # 创建压缩文件
-# shutil.make_archive(f"IDF{IdfVersion}", 'zip', f"IDF{IdfVersion}")
+# 创建压缩文件 使用7z压缩，效率比zip高
 with py7zr.SevenZipFile(f"IDF{IdfVersion}.7z", mode='w') as archive:
     archive.writeall(f"IDF{IdfVersion}")
