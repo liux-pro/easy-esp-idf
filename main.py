@@ -5,6 +5,7 @@ import subprocess
 import shutil
 from git import Repo
 import sys
+import logging
 
 # 这些文件来自于乐鑫  https://github.com/espressif/idf-installer/blob/main/Build-Installer.ps1
 IdfPythonVersion = "3.11.2"
@@ -20,6 +21,8 @@ git_dir = "tools/git"
 
 idf_url = f"https://github.com/espressif/esp-idf.git"
 idf_dir = "idf"
+
+logging.info(f"easy-esp-idf now build IDF {IdfVersion} !")
 
 
 def git_clone(url, extract_path):
@@ -143,12 +146,12 @@ download_and_extract_zip(git_url, git_dir)
 git_clone(idf_url, idf_dir)
 
 # 执行idf安装
-print("installing idf")
-subprocess.call(rf'IDF{IdfVersion}\idf_install.bat')
+logging.info("installing idf")
+subprocess.run('idf_install.bat', cwd=rf"IDF{IdfVersion}", shell=True)
 os.remove(rf'IDF{IdfVersion}\idf_install.bat')
-print("installed idf")
+logging.info("installed idf")
 
-print("testing idf")
+logging.info("testing idf")
 # 执行一个编译测试
 build_test_bat = """
 call idf.bat
@@ -159,15 +162,15 @@ idf.py build
 f = open(fr"IDF{IdfVersion}\build_test.bat", "w", encoding="utf8")
 f.write(build_test_bat)
 f.close()
-subprocess.call(rf'IDF{IdfVersion}\build_test.bat')
+subprocess.run(rf'build_test.bat', cwd=rf"IDF{IdfVersion}", shell=True)
 exists = os.path.exists(rf"IDF{IdfVersion}\test\build\test.bin")
 if exists:
-    print("build test pass!")
+    logging.info("build test pass!")
 else:
-    print("build test fail!")
+    logging.error("build test fail!")
     exit(-1)
 shutil.rmtree(rf"IDF{IdfVersion}\test")
-print("tested idf")
+logging.info("tested pass!")
 
 # 删除下载缓存
 shutil.rmtree(rf"IDF{IdfVersion}\dist")
