@@ -5,8 +5,8 @@ import json
 response = requests.get("https://dl.espressif.com/dl/esp-idf/idf_versions.txt")
 strip = response.text.strip()
 # idf目前最新的若干版本
-IDF_versions = [x for x in strip.split() if x.startswith('v')]
-
+IDF_versions = [x for x in strip.split() if x.startswith('v') and not x.startswith("v4.2")]
+# 4.2用的是旧的virtualenv，不支持
 
 def get_git_tags():
     command = "git tag"
