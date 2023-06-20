@@ -22,7 +22,7 @@ idf_dir = "idf"
 
 
 def git_clone(url, extract_path):
-    extract_path = f"IDF{IdfVersion}/{extract_path}/{IdfVersion}"
+    extract_path = f"IDF{IdfVersion}/{extract_path}/esp-idf-{IdfVersion}"
     #                                      克隆子模块                 子模块只克隆表层     仓库只克隆表层
     extra_args = ['--recurse-submodules', '--shallow-submodules', '--depth=1']
     Repo.clone_from(url, extract_path, branch=IdfVersion, multi_options=extra_args)
