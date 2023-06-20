@@ -5,8 +5,6 @@ import subprocess
 import shutil
 from git import Repo
 import sys
-import logging
-logging.getLogger().setLevel(logging.INFO)
 
 # 这些文件来自于乐鑫  https://github.com/espressif/idf-installer/blob/main/Build-Installer.ps1
 IdfPythonVersion = "3.11.2"
@@ -23,7 +21,7 @@ git_dir = "tools/git"
 idf_url = f"https://github.com/espressif/esp-idf.git"
 idf_dir = "idf"
 
-logging.info(f"easy-esp-idf now build IDF {IdfVersion} !")
+print(f"easy-esp-idf now build IDF {IdfVersion} !")
 
 
 def git_clone(url, extract_path):
@@ -142,17 +140,20 @@ f.write("new")
 f.close()
 
 # idf只需要python，git，和idf这三个东西，之后能自动下载python依赖包和gcc等工具。
+print("download python")
 download_and_extract_zip(python_url, python_dir)
+print("download git")
 download_and_extract_zip(git_url, git_dir)
+print("clone idf")
 git_clone(idf_url, idf_dir)
 
 # 执行idf安装
-logging.info("installing idf")
+print("::group::install idf")
 subprocess.run(rf'IDF{IdfVersion}\idf_install.bat', check=True)
 os.remove(rf'IDF{IdfVersion}\idf_install.bat')
-logging.info("installed idf")
+print("::endgroup::")
 
-logging.info("testing idf")
+print("::group::testing idf")
 # 执行一个编译测试
 build_test_bat = f"""cd IDF{IdfVersion}
 call idf.bat
@@ -165,13 +166,12 @@ f.write(build_test_bat)
 f.close()
 subprocess.run(rf'IDF{IdfVersion}\build_test.bat', check=True)
 exists = os.path.exists(rf"IDF{IdfVersion}\test\build\test.bin")
+print("::endgroup::")
 if exists:
-    logging.info("build test pass!")
+    print("build test pass!")
 else:
-    logging.error("build test fail!")
+    print("build test fail!")
     exit(-1)
 shutil.rmtree(rf"IDF{IdfVersion}\test")
-logging.info("tested idf")
-
 # 删除下载缓存
 shutil.rmtree(rf"IDF{IdfVersion}\dist")
