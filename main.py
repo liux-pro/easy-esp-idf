@@ -6,6 +6,7 @@ import shutil
 from git import Repo
 import sys
 import logging
+logging.getLogger().setLevel(logging.INFO)
 
 # 这些文件来自于乐鑫  https://github.com/espressif/idf-installer/blob/main/Build-Installer.ps1
 IdfPythonVersion = "3.11.2"
@@ -170,7 +171,7 @@ else:
     logging.error("build test fail!")
     exit(-1)
 shutil.rmtree(rf"IDF{IdfVersion}\test")
-logging.info("tested pass!")
+logging.info("tested idf")
 
 # 删除下载缓存
 shutil.rmtree(rf"IDF{IdfVersion}\dist")
