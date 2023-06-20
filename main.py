@@ -153,7 +153,7 @@ logging.info("installed idf")
 
 logging.info("testing idf")
 # 执行一个编译测试
-build_test_bat = """cd IDFv5.1-rc1
+build_test_bat = f"""cd IDF{IdfVersion}
 call idf.bat
 idf.py create-project test
 cd test
@@ -162,7 +162,7 @@ idf.py build
 f = open(fr"IDF{IdfVersion}\build_test.bat", "w", encoding="utf8")
 f.write(build_test_bat)
 f.close()
-subprocess.run(rf'build_test.bat',  check=True)
+subprocess.run(rf'build_test.bat', check=True)
 exists = os.path.exists(rf"IDF{IdfVersion}\test\build\test.bin")
 if exists:
     logging.info("build test pass!")
