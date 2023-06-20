@@ -15,7 +15,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - id: set-matrix
-        run: python get_IDF_version.py >> $GITHUB_OUTPUT
+        run: ${python get_IDF_version.py} >> $GITHUB_OUTPUT
 
   job_build:
     needs: job_check_new_release
