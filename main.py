@@ -8,7 +8,7 @@ from git import Repo
 # 这些文件来自于乐鑫  https://github.com/espressif/idf-installer/blob/main/Build-Installer.ps1
 IdfPythonVersion = "3.11.2"
 GitVersion = "2.39.2"
-IdfVersion = "v5.0.2"
+IdfVersion = "v5.1-rc1"
 
 python_url = f"https://dl.espressif.com/dl/idf-python/idf-python-{IdfPythonVersion}-embed-win64.zip"
 python_dir = f"tools/python"
