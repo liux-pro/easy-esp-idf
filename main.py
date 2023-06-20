@@ -143,9 +143,12 @@ download_and_extract_zip(git_url, git_dir)
 git_clone(idf_url, idf_dir)
 
 # 执行idf安装
+print("installing idf")
 subprocess.call(rf'IDF{IdfVersion}\idf_install.bat')
 os.remove(rf'IDF{IdfVersion}\idf_install.bat')
+print("installed idf")
 
+print("testing idf")
 # 执行一个编译测试
 build_test_bat = """
 call idf.bat
@@ -164,6 +167,7 @@ else:
     print("build test fail!")
     exit(-1)
 shutil.rmtree(rf"IDF{IdfVersion}\test")
+print("tested idf")
 
 
 
