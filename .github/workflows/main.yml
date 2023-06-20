@@ -22,7 +22,7 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        IDF_VERSION: ${{ fromJSON(needs.job1.outputs.matrix) }}
+        IDF_VERSION: ${{ fromJSON(needs.job_check_new_release.outputs.matrix) }}
     steps:
       - uses: actions/checkout@v3
       - name: Download Build Dependency
