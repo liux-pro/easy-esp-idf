@@ -98,7 +98,7 @@ set PYTHONNOUSERSITE=True
 set "PATH=%IDF_PYTHON_DIR%;%IDF_GIT_DIR%;%PATH%"
 if exist "%IDF_PATH%\export.bat" %IDF_PATH%\export.bat
 """
-f = open(fr"IDF{IdfVersion}\idf.bat", "w")
+f = open(fr"IDF{IdfVersion}\idf.bat", "w", encoding="utf8")
 f.write(idf_env_bat)
 f.close()
 
@@ -128,7 +128,7 @@ set PYTHONNOUSERSITE=True
 set "PATH=%IDF_PYTHON_DIR%;%IDF_GIT_DIR%;%PATH%"
 IDF{IdfVersion}\idf\esp-idf-{IdfVersion}\install.bat"
 """
-f = open(fr"IDF{IdfVersion}\idf_install.bat", "w")
+f = open(fr"IDF{IdfVersion}\idf_install.bat", "w", encoding="utf8")
 f.write(idf_env_install_bat)
 f.close()
 
