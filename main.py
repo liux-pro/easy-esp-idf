@@ -147,7 +147,7 @@ git_clone(idf_url, idf_dir)
 
 # 执行idf安装
 logging.info("installing idf")
-subprocess.run('idf_install.bat', cwd=rf"IDF{IdfVersion}", shell=True)
+subprocess.run('idf_install.bat', cwd=rf"IDF{IdfVersion}", shell=True, check=True)
 os.remove(rf'IDF{IdfVersion}\idf_install.bat')
 logging.info("installed idf")
 
@@ -162,7 +162,7 @@ idf.py build
 f = open(fr"IDF{IdfVersion}\build_test.bat", "w", encoding="utf8")
 f.write(build_test_bat)
 f.close()
-subprocess.run(rf'build_test.bat', cwd=rf"IDF{IdfVersion}", shell=True)
+subprocess.run(rf'build_test.bat', cwd=rf"IDF{IdfVersion}", shell=True, check=True)
 exists = os.path.exists(rf"IDF{IdfVersion}\test\build\test.bin")
 if exists:
     logging.info("build test pass!")
