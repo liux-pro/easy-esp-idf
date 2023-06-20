@@ -13,7 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: download runtime dependency
-          run: pip install gitpython
+        run: pip install gitpython
       - name: build artifact
         run: python main.py
       - name: Upload Artifact
