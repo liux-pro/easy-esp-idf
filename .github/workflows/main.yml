@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  job_check_new_release:
+  check_new_release:
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
@@ -20,12 +20,13 @@ jobs:
       - id: set-matrix
         run: echo $(python get_IDF_version.py) >> $GITHUB_OUTPUT
 
-  job_build:
-    needs: job_check_new_release
+  build:
+    needs: check_new_release
+    if: ${{ needs.check_new_release.outputs.matrix != '' && toJson(fromJson(needs.check_new_release.outputs.matrix)) != '[]' }}
     runs-on: windows-latest
     strategy:
       matrix:
-        IDF_VERSION: ${{ fromJSON(needs.job_check_new_release.outputs.matrix) }}
+        IDF_VERSION: ${{ fromJSON(needs.check_new_release.outputs.matrix) }}
     steps:
       - uses: actions/checkout@v3
       - name: Download Build Dependency
