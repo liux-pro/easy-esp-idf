@@ -3,6 +3,7 @@ import os
 import zipfile
 import subprocess
 import shutil
+from git import Repo
 
 # 这些文件来自于乐鑫  https://github.com/espressif/idf-installer/blob/main/Build-Installer.ps1
 IdfPythonVersion = "3.11.2"
@@ -16,8 +17,15 @@ python_path = "tools/python/python.exe"
 git_url = f"https://dl.espressif.com/dl/idf-git/idf-git-{GitVersion}-win64.zip"
 git_dir = "tools/git"
 
-idf_url = f"https://github.com/espressif/esp-idf/releases/download/{IdfVersion}/esp-idf-{IdfVersion}.zip"
+idf_url = f"https://github.com/espressif/esp-idf.git"
 idf_dir = "idf"
+
+
+def git_clone(url, extract_path):
+    extract_path = f"IDF{IdfVersion}/{extract_path}/{IdfVersion}"
+    #                                      克隆子模块                 子模块只克隆表层     仓库只克隆表层
+    extra_args = [f'-b {IdfVersion}', '--recurse-submodules', '--shallow-submodules', '--depth=1']
+    Repo.clone_from(url, extract_path, git_args=extra_args)
 
 
 def download_and_extract_zip(url, extract_path):
@@ -103,14 +111,13 @@ f.close()
 # idf只需要python，git，和idf这三个东西，之后能自动下载python依赖包和gcc等工具。
 download_and_extract_zip(python_url, python_dir)
 download_and_extract_zip(git_url, git_dir)
-download_and_extract_zip(idf_url, idf_dir)
+git_clone(idf_url, idf_dir)
 
 # 执行idf安装
 subprocess.call(rf'IDF{IdfVersion}\idf_install.bat')
 os.remove(rf'IDF{IdfVersion}\idf_install.bat')
 
-
-shutil.rmtree(rf"IDF{IdfVersion}\idf\esp-idf-{IdfVersion}\.git")
+# 删除下载缓存
 shutil.rmtree(rf"IDF{IdfVersion}\dist")
 
 # # 创建压缩文件
