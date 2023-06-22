@@ -112,7 +112,6 @@ set IDF_PYTHON=%~dp0\tools\python\python.exe
 set IDF_PYTHON_DIR=%~dp0\tools\python
 set IDF_GIT_DIR=%~dp0\tools\git\cmd
 set IDF_TOOLS_PATH=%~dp0
-%IDF_PYTHON% -m ensurepip
 
 
 echo %~dp0>%~dp0path-fix.txt
