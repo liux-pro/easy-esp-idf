@@ -66,7 +66,7 @@ rem     这是python虚拟环境的配置文件，里面保存python本体的路
 
 rem 还是上边的问题，虚拟环境虽然改了配置文件就能用，但是pip不认，这里pip删了重装
 rem path-fix.txt保存了idf安装目录，如果这个目录和当前目录不一样，证明python被移动了，需要重装pip
-set /P pathFix=<path-fix.txt
+set /P pathFix=<%~dp0path-fix.txt
 
 if "%pathFix%" neq "%~dp0" (
     echo New install detected! Reinstalling pip!
@@ -83,7 +83,7 @@ if "%pathFix%" neq "%~dp0" (
     )
 )
 
-echo %~dp0>path-fix.txt
+echo %~dp0>%~dp0path-fix.txt
 
 set PREFIX=%IDF_PYTHON% %IDF_PATH%
 DOSKEY idf.py=%PREFIX%\tools\idf.py $*
@@ -113,7 +113,7 @@ set IDF_PYTHON_DIR=%~dp0\tools\python
 set IDF_GIT_DIR=%~dp0\tools\git\cmd
 set IDF_TOOLS_PATH=%~dp0
 
-echo %~dp0>path-fix.txt
+echo %~dp0>%~dp0path-fix.txt
 
 set PREFIX=%IDF_PYTHON% %IDF_PATH%
 DOSKEY idf.py=%PREFIX%\tools\idf.py $*
@@ -134,10 +134,6 @@ f = open(fr"IDF{IdfVersion}\idf_install.bat", "w", encoding="utf8")
 f.write(idf_env_install_bat)
 f.close()
 
-# 随便写入这个路径，让脚本自己去适配pip
-f = open(fr"IDF{IdfVersion}\path-fix.txt", "w", encoding="utf8")
-f.write("new")
-f.close()
 
 # idf只需要python，git，和idf这三个东西，之后能自动下载python依赖包和gcc等工具。
 print("download python")
