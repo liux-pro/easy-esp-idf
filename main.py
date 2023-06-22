@@ -169,5 +169,6 @@ else:
     print("build test fail!")
     exit(-1)
 shutil.rmtree(rf"IDF{IdfVersion}\test")
+os.remove(rf'IDF{IdfVersion}\build_test.bat')
 # 删除下载缓存
 shutil.rmtree(rf"IDF{IdfVersion}\dist")
