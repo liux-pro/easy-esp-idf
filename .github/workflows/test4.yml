@@ -1,0 +1,22 @@
+# 检测代码能否正常编译
+
+name: Test
+
+on:
+  push:
+    branches: [ "master" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        IDF_VERSION: [v4.4.5]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Download Build Dependency
+        run: pip install gitpython
+
+      - name: Build
+        run: python main.py ${{ matrix.IDF_VERSION }}

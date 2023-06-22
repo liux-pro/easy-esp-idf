@@ -6,8 +6,6 @@ on:
   schedule:
     # 这里是utc时间
     - cron:  '0 0 * * *'
-  push:
-    branches: [ "master" ]
   workflow_dispatch:
 
 jobs:
