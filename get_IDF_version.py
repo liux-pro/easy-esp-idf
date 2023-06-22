@@ -1,13 +1,12 @@
 import requests
 import subprocess
 import json
+from utils import get_all_IDF_tags
 
-response = requests.get("https://dl.espressif.com/dl/esp-idf/idf_versions.txt")
-strip = response.text.strip()
-# idf目前最新的若干版本
-IDF_versions = [x for x in strip.split() if x.startswith('v5')]
-# 先研究v5的兼容，v4好像不一样
+IDF_versions = get_all_IDF_tags()
 
+
+# 获取已构建的版本
 def get_git_tags():
     command = "git tag"
     result = subprocess.run(command, capture_output=True, text=True, shell=True)
