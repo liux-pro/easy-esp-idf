@@ -154,8 +154,9 @@ print("::endgroup::")
 # 修复 windows-curses
 print("::group::fix windows-curses")
 # 执行一个编译测试
-fix_windows_curses = f"""call idf.bat
-windows-curses
+fix_windows_curses = f"""cd IDF{IdfVersion}
+call idf.bat
+pip install windows-curses
 """
 f = open(fr"IDF{IdfVersion}\fix_windows_curses.bat", "w", encoding="utf8")
 f.write(fix_windows_curses)
