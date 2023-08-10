@@ -150,6 +150,20 @@ subprocess.run(rf'IDF{IdfVersion}\idf_install.bat', check=True)
 os.remove(rf'IDF{IdfVersion}\idf_install.bat')
 print("::endgroup::")
 
+
+# 修复 windows-curses
+print("::group::fix windows-curses")
+# 执行一个编译测试
+fix_windows_curses = f"""call idf.bat
+windows-curses
+"""
+f = open(fr"IDF{IdfVersion}\fix_windows_curses.bat", "w", encoding="utf8")
+f.write(fix_windows_curses)
+f.close()
+subprocess.run(rf'IDF{IdfVersion}\fix_windows_curses.bat', check=True)
+print("::endgroup::")
+
+
 print("::group::testing idf")
 # 执行一个编译测试
 build_test_bat = f"""cd IDF{IdfVersion}
